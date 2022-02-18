@@ -66,7 +66,7 @@ public class MarioPowerUp
             response = console.next();
 
         // YOU DO: fix this stop condition
-        } while (response.equals("y"));      
+        } while (response == "y");      
         
         // sign off
         System.out.println("Thanks for playing!");
@@ -138,23 +138,20 @@ public class MarioPowerUp
         for (double t = 0; t < 2; t += FRAME_T/1000.0) 
         {
             // YOU DO: draw background and bricks onto off screen image
-            drawBackground();
-            drawBricks();
 
             // YOU DO: draw mario with current powerup index onto off screen image
-            osg.drawImage(marios[iM], mariox, marioy, null);
 
             // YOU DO: draw new powerup flower with latest position onto off screen image
-            osg.drawImage(flowers[iF], pos(fX, 63, 0, t), fY, null);
-
+        
             // copy off screen image onto DrawingPanel
             g.drawImage(offscreen, 0, 0, null);
         
             // sleep for FRAME_T milliseconds
             panel.sleep(FRAME_T);
         }     
-        // YOU DO: return the new x position of the flower after the slide
-        return (int) pos(fX, 63, 0, 2);
+        // YOU DO: return the new x position of the flower after the slide 
+        //         (instead of returning 0)
+        return 0;
     }
 
     // grow a new powerup flower
@@ -236,21 +233,8 @@ public class MarioPowerUp
         marios = new BufferedImage[rows * cols];
         
         // WE DO: load mario sprites
-        int shift = heightM + heightF;
-        for (int j = 0; j < rows; j++) {
-            for (int i = 0; i < cols; i++)
-            {
-                marios[(j * cols) + i] = spriteSheet.getSubimage(i * width, shift * j, width, heightM);
-            }
-        }
         
         // YOU DO: load flower sprites
-        flowers = new BufferedImage[rows * cols];
-        for (int j = 0; j < rows; j++) {
-            for (int i = 0; i < cols; i++)
-            {
-                flowers[(j * cols) + i] = spriteSheet.getSubimage(i * width, shift * j + heightM, width, heightF);
-            }
-        }
+        
     }
 }
