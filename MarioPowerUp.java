@@ -8,7 +8,7 @@
 //
 //   You Do: 1) Extract all "flowers" from the spriteSheet
 //           2) Fix the broken stop condition in the while loop of main
-//           3) Complete the method newIndex
+//           3) Complete the method newIndex to customize probabilities of each powerup!
 //
 //*******************************************************************
 
