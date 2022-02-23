@@ -8,7 +8,7 @@
 //
 //   You Do: 1) Extract all "flowers" from the spriteSheet
 //           2) Fix the broken stop condition in the while loop of main
-//           3) Complete the method newIndex to customize probabilities of each powerup!
+//           3) Complete the methods newIndex and updateProbs
 //
 //*******************************************************************
 
@@ -115,13 +115,15 @@ public class MarioPowerUp
     // reduce prob of getting powerup at index, redistribute prob across all other powerups
     public static void updateProbs(int index)
     {
-        // redistribute probs across all other powerups 
+        // we will reduce prob of powerup at index by half
         double reduce = probs[index] / 2;
+
+        // redistribute probs across all other powerups
         for (int i = 0; i < probs.length; i++){
-            probs[i] += reduce / probs.length;
+            // YOU DO: update probs
         }
 
-        // reduce prob of powerup at index by half
+        // make the update for the powerup at index
         probs[index] = reduce;
     }
 
