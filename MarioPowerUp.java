@@ -57,10 +57,6 @@ public class MarioPowerUp
         // load bg and spritesheet images
         loadImages();
 
-        // init probabilities
-
-
-
         // init powerup index for mario
         int indexM = 0;
         String response;
