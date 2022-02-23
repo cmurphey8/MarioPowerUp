@@ -275,11 +275,11 @@ public class MarioPowerUp
         
 
         // initialize probabilities of getting each powerup
-        probs = new double[marios.length];
-        for (int i = 0; i < marios.length; i++)
+        probs = new double[rows * cols];
+        for (int i = 0; i < rows * cols; i++)
         {
             // start with uniform probability
-            probs[i] = 1.0 / marios.length;
+            probs[i] = 1.0 / (rows * cols);
         }
     }
 }
