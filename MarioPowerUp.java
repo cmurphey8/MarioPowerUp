@@ -1,14 +1,14 @@
 //*******************************************************************
 //
-//   File: MarioPowerUp.java          
+//   File: MarioPowerUpSol.java          
 //
-//   Class: MarioDraw
+//   Class: MarioPowerUpSol
 // 
 //   We Do: Extract all marios from the spriteSheet
 //
 //   You Do: 1) Extract all "flowers" from the spriteSheet
-//           2) Complete the method slideFlower
-//           3) Fix the broken stop condition in the while loop of main
+//           2) Fix the broken stop condition in the while loop of main
+//           3) Complete the method newIndex
 //
 //*******************************************************************
 
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
-public class MarioPowerUp 
+public class MarioPowerUp
 {
     // global variables defining the size of our DrawingPanel
     static final int width = 575;
@@ -44,6 +44,9 @@ public class MarioPowerUp
     // spritesheet images
     static BufferedImage[] marios;
     static BufferedImage[] flowers;
+
+    // likelihood of getting a powerup
+    static double[] probs;
     
     // main routine tests helper method printPyramid
     public static void main(String[] args) throws IOException
@@ -53,6 +56,10 @@ public class MarioPowerUp
 
         // load bg and spritesheet images
         loadImages();
+
+        // init probabilities
+
+
 
         // init powerup index for mario
         int indexM = 0;
@@ -66,7 +73,7 @@ public class MarioPowerUp
             response = console.next();
 
         // YOU DO: fix this stop condition
-        } while (response == "y");      
+        } while (response.equals("y"));      
         
         // sign off
         System.out.println("Thanks for playing!");
@@ -81,12 +88,41 @@ public class MarioPowerUp
         int flowerY = 200;
 
         // init new random powerup index for flower
-        int indexF = (int) (Math.random() * 24);
+        int indexF = (int) (Math.random() * 24); // newIndex();
         flowerY = growFlower(indexM, indexF, flowerX, flowerY);
         flowerX = slideFlower(indexM, indexF, flowerX, flowerY);
         indexM = dropFlower(indexM, indexF, flowerX, flowerY);
 
         return indexM;
+    }
+
+    // find the next powerup index
+    public static int newIndex()
+    {
+        // find a new random number in range [0, 1)
+        double next = Math.random();
+
+        // YOU DO: find the index that corresponds with the value of next (recall Barnsley leaf example from lecture)
+        for (int i = 0; i < probs.length; i++){
+            // once we find our index, update probs and return the index
+            updateProbs(i);
+            return i;
+        }
+        // default value
+        return 0;
+    }
+
+    // reduce prob of getting powerup at index, redistribute prob across all other powerups
+    public static void updateProbs(int index)
+    {
+        // redistribute probs across all other powerups 
+        double reduce = probs[index] / 2;
+        for (int i = 0; i < probs.length; i++){
+            probs[i] += reduce / probs.length;
+        }
+
+        // reduce prob of powerup at index by half
+        probs[index] = reduce;
     }
 
     // drop the powerup flower on mario and display new powerup
@@ -137,21 +173,24 @@ public class MarioPowerUp
         // animate flower grow-up in one second
         for (double t = 0; t < 2; t += FRAME_T/1000.0) 
         {
-            // YOU DO: draw background and bricks onto off screen image
+            // draw background and bricks onto off screen image
+            drawBackground();
+            drawBricks();
 
-            // YOU DO: draw mario with current powerup index onto off screen image
+            // draw mario with current powerup index onto off screen image
+            osg.drawImage(marios[iM], mariox, marioy, null);
 
-            // YOU DO: draw new powerup flower with latest position onto off screen image
-        
+            // draw new powerup flower with latest position onto off screen image
+            osg.drawImage(flowers[iF], pos(fX, 63, 0, t), fY, null);
+
             // copy off screen image onto DrawingPanel
             g.drawImage(offscreen, 0, 0, null);
         
             // sleep for FRAME_T milliseconds
             panel.sleep(FRAME_T);
         }     
-        // YOU DO: return the new x position of the flower after the slide 
-        //         (instead of returning 0)
-        return 0;
+        // return the new x position of the flower after the slide
+        return (int) pos(fX, 63, 0, 2);
     }
 
     // grow a new powerup flower
@@ -169,7 +208,7 @@ public class MarioPowerUp
             // draw mario with current powerup index
             osg.drawImage(marios[iM], mariox, marioy, null);
 
-            // you can pick any two values that satisfy the kinematic constraints
+            // grow the flower at each time step
             osg.drawImage(flowers[iF], fX, pos(fY, -35, 0, t), null);
 
             // draw bricks after flower to hide flower as it grows
@@ -230,11 +269,19 @@ public class MarioPowerUp
         final int heightF = 37;
         final int rows = 3;
         final int cols = 8;
-        marios = new BufferedImage[rows * cols];
-        
+
         // WE DO: load mario sprites
+       
         
         // YOU DO: load flower sprites
         
+
+        // initialize probabilities of getting each powerup
+        probs = new double[marios.length];
+        for (int i = 0; i < marios.length; i++)
+        {
+            // start with uniform probability
+            probs[i] = 1.0 / marios.length;
+        }
     }
 }
