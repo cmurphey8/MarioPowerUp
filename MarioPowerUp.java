@@ -69,7 +69,7 @@ public class MarioPowerUp
             response = console.next();
 
         // YOU DO: fix this stop condition
-        } while (response.equals("y"));      
+        } while (response == "y");      
         
         // sign off
         System.out.println("Thanks for playing!");
